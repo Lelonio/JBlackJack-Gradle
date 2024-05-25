@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'org.asciidoctor.convert' version '1.5.8'
+}
+
+group 'org.jblackjack'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+}
+
+task generateClassDiagram(type: JavaExec) {
+    main = 'net.sourceforge.plantuml.Run'
+    classpath configurations.compileClasspath, configurations.runtimeClasspath, files('/Users/emanuele/Downloads/plantuml-1.2024.4.jar')
+    args = ["-tpng", "src/main/resources/plantuml/classDiagram.puml"]
+    doFirst {
+        mkdir "build/plantuml"
+    }
+    doLast {
+        copy {
+            from "src/main/resources/plantuml/classDiagram.png"
+            into "build/plantuml"
+        }
+    }
+}
+
+build.dependsOn generateClassDiagram
+
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.compileClasspath
+    destinationDir = file("$buildDir/docs/javadoc")
+    options {
+        encoding 'UTF-8'
+        charSet 'UTF-8'
+        author true
+        version true
+        links "https://docs.oracle.com/javase/8/docs/api/"
+    }
+}

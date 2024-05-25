@@ -1,0 +1,26 @@
+@startuml
+package org.jblackjack.controller {
+    class AudioManager
+    class BlackJackController
+}
+
+package org.jblackjack.model {
+    class BlackJackModel
+    class Card
+    class Player
+}
+
+package org.jblackjack.view {
+    class BlackJackView
+    class CardPanel
+    class SetupDialog
+}
+
+class Main
+
+' Define relationships if known
+BlackJackController --|> BlackJackModel
+BlackJackView --|> BlackJackController
+Player --|> Card
+
+@enduml
